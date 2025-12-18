@@ -25,7 +25,7 @@ function Button({ children, onClick, disabled }) {
   );
 }
 
-export  function TransactionItem({ transaction, onDelete, isDeleting }) {
+export function TransactionItem({ transaction, onDelete, isDeleting }) {
   const isIncome = transaction.type === "income";
 
   const bgGradient = isIncome
@@ -37,10 +37,13 @@ export  function TransactionItem({ transaction, onDelete, isDeleting }) {
   const amountColor = isIncome ? "text-green-600" : "text-red-600";
 
   return (
-    <Card className={`p-4 flex items-center justify-between ${bgGradient}`}>
-      <div className="flex items-center gap-4 flex-1">
-        {/* Icon Bubble */}
-        <div className={`p-3 rounded-lg ${iconBg}`}>
+    <Card
+      className={`p-4 ${bgGradient} flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between`}
+    >
+      {/* Left Section */}
+      <div className="flex items-start gap-3 flex-1">
+        {/* Icon */}
+        <div className={`p-2 rounded-lg ${iconBg}`}>
           {isIncome ? (
             <TrendingUp className={`w-5 h-5 ${iconColor}`} />
           ) : (
@@ -48,29 +51,31 @@ export  function TransactionItem({ transaction, onDelete, isDeleting }) {
           )}
         </div>
 
-        {/* Text Content */}
+        {/* Text */}
         <div className="flex-1">
           <h3 className="font-semibold text-gray-900 text-sm">
             {transaction.title}
           </h3>
 
-          <div className="flex gap-3 mt-1.5 text-xs text-gray-500">
-            <span className="capitalize px-2 py-1 rounded bg-gray-200 text-gray-700">
+          <div className="flex flex-wrap gap-2 mt-1 text-xs text-gray-500">
+            <span className="capitalize px-2 py-0.5 rounded bg-gray-200 text-gray-700">
               {transaction.category}
             </span>
-
             <span>{format(new Date(transaction.date), "MMM dd, yyyy")}</span>
           </div>
         </div>
       </div>
 
-      {/* Amount + Delete Btn */}
-      <div className="flex items-center gap-4">
-        <span className={`text-lg font-bold ${amountColor}`}>
+      {/* Right Section */}
+      <div className="flex items-center justify-between sm:justify-end gap-4">
+        <span className={`text-base font-bold ${amountColor}`}>
           {isIncome ? "+" : "-"}${Math.abs(transaction.amount).toFixed(2)}
         </span>
 
-        <Button onClick={() => onDelete(transaction.id)} disabled={isDeleting}>
+        <Button
+          onClick={() => onDelete(transaction.id)}
+          disabled={isDeleting}
+        >
           <Trash2 className="w-4 h-4" />
         </Button>
       </div>
